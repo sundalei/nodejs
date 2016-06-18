@@ -42,6 +42,21 @@ fs.readdir(process.cwd(), function (err, files) {
     stdout.write('    \033[33mEnter your choice: \033[39m');
     stdin.resume();
     stdin.setEncoding('utf-8');
+    stdin.on('data', option);
+  }
+
+  // called with the option supplied by the user
+  function option (data) {
+    var filename = files[Number(data)];
+    if (!filename) {
+      stdout.write('    \033[31mEnter your choice: \033[39m');
+    } else {
+      stdin.pause();
+      fs.readFile(__dirname + '/' + filename, 'utf-8', function (err, data) {
+        console.log('');
+        console.log('\033[90m' + data.replace(/(.*)/g, '    $1') + '\033[39m');
+      });
+    }
   }
 
   file(0);
