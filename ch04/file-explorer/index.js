@@ -8,7 +8,7 @@ var fs = require('fs'),
     stdin = process.stdin,
     stdout = process.stdout;
 
-fs.readdir(process.cwd(), function (err, files) {
+fs.readdir(__dirname, function (err, files) {
   console.log('');
 
   if (!files.length) {
