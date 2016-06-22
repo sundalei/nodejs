@@ -1,4 +1,5 @@
 'use strict';
+// test
 
 var ajax = new XMLHttpRequest();
 ajax.addEventListener('stateChange', function () {
