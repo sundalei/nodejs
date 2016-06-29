@@ -2,7 +2,6 @@ var qs = require('querystring'),
     http = require('http');
 
 var search = process.argv.slice(2).join(' ').trim();
-//console.log(search);
 
 if (!search.length) {
   return console.log('\n  Usage: node tweets <search term>\n');
@@ -10,7 +9,7 @@ if (!search.length) {
 
 console.log('\n searching for: \033[96m' + search + '\033[39m\n');
 
-http.request({
+http.get({
   host : 'api.douban.com',
   path : '/v2/movie/search?' + qs.stringify({tag : search})
 }, function (res) {
@@ -27,4 +26,4 @@ http.request({
       console.log(record.title);
     });
   });
-}).end();
+});
