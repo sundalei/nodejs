@@ -4,18 +4,24 @@
  * Module dependencies.
  */
 
-var connect = require('connect');
-var http = require('http');
+var connect = require('connect'),
+    serveStatic = require('serve-static');
 
 /**
  * Create server.
  */
 
 var app = connect();
-var server = http.createServer(app);
+//console.log(app);
 
 /**
  * Handle static files.
  */
 
-server.use();
+app.use(serveStatic(__dirname + '/website'));
+
+/**
+ * Listen
+ */
+
+app.listen(3000);
