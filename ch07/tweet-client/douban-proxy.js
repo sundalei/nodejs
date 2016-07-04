@@ -11,12 +11,8 @@ if (!search.length) {
 console.log('\n searching for: \033[96m' + search + '\033[39m\n');
 
 http.request({
-  host : '10.167.196.133',
-  port : 8080,
-  path : 'http://api.douban.com/v2/movie/search?' + qs.stringify({tag : search}),
-  headers: {
-    host: 'api.douban.com'
-  }
+  host : 'api.douban.com',
+  path : '/v2/movie/search?' + qs.stringify({tag : search})
 }, function (res) {
   var body = '';
   res.setEncoding('utf8');
@@ -26,9 +22,6 @@ http.request({
   });
 
   res.on('end', function () {
-    var obj = JSON.parse(body);
-    obj.subjects.forEach(function (record) {
-      console.log(record.title);
-    });
+    console.log(body);
   });
 }).end();
