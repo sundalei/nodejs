@@ -18,6 +18,8 @@ var app = connect();
  * Handle static files.
  */
 
+console.log(serveStatic(__dirname + '/website'));
+
 app.use(serveStatic(__dirname + '/website'));
 
 /**
