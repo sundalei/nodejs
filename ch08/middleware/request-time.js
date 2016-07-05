@@ -20,9 +20,10 @@ module.exports = function (opts) {
     res.end = function (chunk, encoding) {
       res.end = end;
       res.end(chunk, encoding);
+      console.log('clear timer');
       clearTimeout(timer);
     };
 
-    
+    next();
   }
 }
