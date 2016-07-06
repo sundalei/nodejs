@@ -5,6 +5,7 @@
  */
 
 var connect = require('connect'),
+    morgan = require('morgan'),
     serveStatic = require('serve-static');
 
 /**
@@ -17,8 +18,12 @@ var app = connect();
 /**
  * Handle static files.
  */
+ 
 
-console.log(serveStatic(__dirname + '/website'));
+app.use(morgan('type is :res[content-type], length is '
+                + ':res[content-length] and it took :response-time ms.'));
+
+// app.use(morgan('type is :type, length is :length-type and it took :response-time ms.'));
 
 app.use(serveStatic(__dirname + '/website'));
 
