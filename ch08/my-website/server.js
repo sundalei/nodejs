@@ -13,17 +13,18 @@ var connect = require('connect'),
  */
 
 var app = connect();
-//console.log(app);
+
+morgan.token('type', function (req, res) {
+  return req.headers['content-type'];
+});
 
 /**
  * Handle static files.
  */
- 
 
-app.use(morgan('type is :res[content-type], length is '
+
+app.use(morgan('request type is :type, response type is :res[content-type], length is '
                 + ':res[content-length] and it took :response-time ms.'));
-
-// app.use(morgan('type is :type, length is :length-type and it took :response-time ms.'));
 
 app.use(serveStatic(__dirname + '/website'));
 
