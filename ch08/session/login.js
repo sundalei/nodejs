@@ -5,4 +5,63 @@
  */
 
 var connect = require('connect'),
-    users = require('./users');
+    morgan = require('morgan'),
+    users = require('./users'),
+    session = require('express-session'),
+    bodyParser = require('body-parser');
+
+var app = connect();
+
+app.use(morgan('dev'));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(session({secret : 'my app secret', resave : 'false',
+         saveUninitialized : 'false'}));
+
+app.use(function (req, res, next) {
+  console.log(req.session);
+  if ('/' === req.url && req.session.logged_in) {
+    res.writeHead(200, {'Content-Type' : 'text/html'});
+    res.end('Welcome back, <b>' + req.session.name + '</b>. '
+            + '<a href="/logout">Logout</a>');
+  } else {
+    next();
+  }
+});
+
+app.use(function (req, res, next) {
+  if ('/' === req.url && 'GET' === req.method) {
+    res.writeHead(200, {'Content-Type' : 'text/html'});
+    res.end([
+      '<form action="/login" method = "POST">',
+      '<fieldset>',
+      '<legend>Please log in</legend>',
+      '<p>User: <input type="text" name="user"></p>',
+      '<p>Password: <input type="password" name="password"></p>',
+      '<button>Submit</button>',
+      '</fileset>',
+      '</form>'
+    ].join(''));
+  } else {
+    next();
+  }
+});
+
+app.use(function (req, res, next) {
+  if ('/login' === req.url && 'POST' === req.method) {
+    res.writeHead(200);
+    if(!users[req.body.user] ||
+         req.body.password !== users[req.body.user].password) {
+      res.end('Bad username/password');
+    } else {
+      req.session.logged_in = true;
+      req.session.name = users[req.body.user].name;
+      res.end('Authenticated!');
+    }
+  } else {
+    next();
+  }
+});
+
+app.listen(3000);
