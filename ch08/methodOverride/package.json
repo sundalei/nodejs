@@ -4,6 +4,7 @@
   "dependencies" : {
     "connect" : "latest",
     "method-override" : "latest",
-    "xmlhttprequest" : "latest"
+    "xmlhttprequest" : "latest",
+    "serve-static" : "latest"
   }
 }
