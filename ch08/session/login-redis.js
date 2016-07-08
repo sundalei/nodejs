@@ -8,8 +8,10 @@ var connect = require('connect'),
     morgan = require('morgan'),
     users = require('./users'),
     session = require('express-session'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    correctRedis = require('connect-redis');
 
+var redisStore = correctRedis(session);
 var app = connect();
 
 app.use(morgan('dev'));
@@ -17,7 +19,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({secret : 'my app secret', resave : 'false',
-         saveUninitialized : 'false'}));
+         saveUninitialized : 'false', store : new redisStore()}));
 
 app.use(function (req, res, next) {
   console.log(req.session);
