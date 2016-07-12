@@ -3,10 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <title>ajax test</title>
+<script type="text/javascript">
+
+function success(text) {
+  var textarea = document.getElementById('test-response-text');
+  textarea.value = text;
+}
+
+function fail(code) {
+  var textarea = document.getElementById('test-response-text');
+  textarea.value = 'Error code: ' + code;
+}
+
+function checkForm() {
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function() {
+    if(request.readyState === 4) {
+      if(request.status === 200) {
+        return success(request.responseText);
+      } else {
+        return fail(request.status);
+      }
+    } else {
+      // alert('HTTP request is continuing');
+    }
+  }
+
+  request.open('post', 'resource');
+  request.setRequestHeader('X-Method-Override', 'PUT');
+  request.send();
+  // alert('request has been sent, please waits for response...');
+}
+</script>
 </head>
 <body>
-  <form method="post" action="/resource?_method=PUT">
-    <button type="submit">Put resource</button>
-  </form>
+	<form action="" id="test-form" onsubmit="">
+		<input type="button" value="button" id="button" onclick="return checkForm()">
+	</form>
+	<textarea id="test-response-text" style="width: 90%; margin: 15px 0; resize: none;" rows="5">response： </textarea>
+	<p id="test-jsonp"></p>
 </body>
 </html>

@@ -5,7 +5,7 @@ var serveStatic = require('serve-static');
 // override with the X-HTTP-Method-Override header in the request
 var app = connect();
 
-app.use(methodOverride('X-Method-Override'));
+app.use(methodOverride('X-Method-Override', {methods : ['GET', 'POST']}));
 
 app.use(serveStatic(__dirname));
 
