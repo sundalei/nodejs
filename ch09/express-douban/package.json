@@ -5,6 +5,7 @@
     "express" : "latest",
     "ejs" : "latest",
     "superagent" : "latest",
-    "superagent-proxy" : "latest"
+    "superagent-proxy" : "latest",
+    "serve-static" : "latest"
   }
 }
