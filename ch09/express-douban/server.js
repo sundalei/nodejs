@@ -2,7 +2,7 @@
  * Module requirements.
  */
 var express = require('express'),
-    search = require('./search');
+    search = require('./search-proxy');
 
 /**
  * Create app.
@@ -28,7 +28,10 @@ app.get('/search', function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('search', {results : doubans, search : req.query.q});
+    res.render('search', {results : doubans, search : req.query.q}, function (err, html) {
+      console.log(html);
+      res.send(html);
+    });
   });
 });
 
