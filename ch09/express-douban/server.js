@@ -2,7 +2,7 @@
  * Module requirements.
  */
 var express = require('express'),
-    search = require('./search-proxy');
+    search = require('./search');
 
 /**
  * Create app.
