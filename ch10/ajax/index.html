@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Ajax request test</title>
+    <script src="jquery-2.2.3.js"></script>
+    <script>
+
+    $(document).ready(function () {
+      var sending = false;
+      $(document).mousemove(function (event) {
+        sending = true;
+        $.post('/position', {x : event.clientX, y : event.clientY},
+         function (result) {
+          $('#content').val(result);
+        });
+      });
+    });
+
+    </script>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <input id="content" type="text"></input>
+  </body>
+</html>
