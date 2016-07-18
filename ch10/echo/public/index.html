@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html>
   <head>
     <title>WebSocket echo test</title>
@@ -8,33 +8,41 @@
 
     window.onload = function () {
       // create socket
-      var socket = new WebSocket('ws://localhost:3000');
+      var client = new WebSocket('ws://localhost:3000', 'echo-protocol');
 
-      socket.onopen = function (evt) {
-        alert('connection open...');
+      client.onerror = function () {
+        console.log('Connection Error');
+      }
+
+      client.onopen = function (evt) {
+        console.log('WebSocket Client Connected');
         // send first ping
         ping();
       };
 
-      socket.onmessage = function (evt) {
-        alert( "Received Message: " + evt.data);
+      client.onmessage = function (evt) {
+        //alert( "Received Message: " + evt.data);
 
         console.log(' got: ' + event.data);
         // you got echo back, measure latency
-        document.getElementById('latency').innerHTML = new Date - lastMessage;
+        document.getElementById('latency').innerHTML = new Date() - lastMessage
+           +'ms';
         // ping again
-        ping();
+        //ping();
       }
 
-      socket.onclose = function () {
-        alert("Connection closed.");
+      client.onclose = function () {
+        console.log("echo-protocol Client Closed");
       }
 
       function ping() {
         // record the timestamp
-        lastMessage = new Date;
+        lastMessage = new Date();
+
         // send the message
-        socket.send('ping');
+        if (client.readyState === client.OPEN) {
+          client.send('ping');
+        }
       }
     };
 
