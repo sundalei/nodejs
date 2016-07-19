@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>WebSocket echo test</title>
+    <script>
+
+    window.onload = function () {
+      // create socket
+      var ws = new WebSocket('ws://localhost:3000', 'echo-protocol');
+
+      ws.onerror = function () {
+        console.log('Connection Error');
+      }
+
+      ws.onopen = function () {
+        // send the message
+        if (ws.readyState === ws.OPEN) {
+          document.onmousemove = function (ev) {
+            ws.send(JSON.stringify({x : ev.clientX, y : ev.clientY}));
+          }
+        }
+      };
+
+      var initialized;
+
+      ws.onmessage = function (evt) {
+        var obj = JSON.parse(evt.data);
+
+        if (!initialized) {
+          initialized = true;
+          for(var id in obj) {
+            move(id, obj[id]);
+          }
+        } else {
+          if ('disconnect' === obj.type) {
+            remove(obj.id);
+          } else {
+            move(obj.id, obj.pos);
+          }
+        }
+      }
+
+      ws.onclose = function () {
+        console.log("echo-protocol Client Closed");
+      }
+
+      function move (id, pos) {
+        var cursor = document.getElementById('cursor-' + id);
+
+        if(!cursor) {
+          cursor = document.createElement('img');
+          cursor.id = 'cursor-' + id;
+          cursor.src = '/cursor.png';
+          cursor.style.position = 'absolute';
+          document.body.appendChild(cursor);
+        }
+
+        var obj = JSON.parse(pos);
+        cursor.style.left = obj.x + 'px';
+        cursor.style.top = obj.y + 'px';
+      }
+
+      function remove (id) {
+        var cursor = document.getElementById('cursor-' + id);
+        cursor.parentNode.removeChild(cursor);
+      }
+    };
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

@@ -30,9 +30,10 @@ ws.on('request', function (request) {
   socket.sendUTF(JSON.stringify(positions));
   socket.on('message', function (msg) {
     try {
-      var pos = JSON.parse(msg);
+      // { type: 'utf8', utf8Data: '{"x":127,"y":304}' }
+      var pos = msg.utf8Data;
     } catch (e) {
-      return;
+      console.error(e);
     }
 
     positions[socket.id] = pos;
@@ -48,7 +49,7 @@ ws.on('request', function (request) {
   function broadcast(msg) {
     for (var i in connectedSocket) {
       if (connectedSocket[i] && socket.id !== i) {
-        connectedSocket[i].send(msg);
+        connectedSocket[i].sendUTF(msg);
       }
     }
   }
