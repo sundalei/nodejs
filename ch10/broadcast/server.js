@@ -31,7 +31,7 @@ ws.on('request', function (request) {
   socket.on('message', function (msg) {
     try {
       // { type: 'utf8', utf8Data: '{"x":127,"y":304}' }
-      var pos = msg.utf8Data;
+      var pos = JSON.parse(msg.utf8Data);
     } catch (e) {
       console.error(e);
     }
