@@ -3,7 +3,7 @@ var express = require('express');
 
 var positions = {};
 var total = 0;
-var connectedSocket = [];
+var connectedSocket = {};
 
 var app = express();
 
@@ -24,7 +24,7 @@ ws.on('request', function (request) {
 
   // you give the socket an id
   socket.id = ++total;
-  connectedSocket.push(socket);
+  connectedSocket[socket.id] = socket;
 
   // you send the positions of everyone else
   socket.sendUTF(JSON.stringify(positions));
@@ -41,12 +41,13 @@ ws.on('request', function (request) {
 
   socket.on('close', function(reasonCode, description) {
     delete positions[socket.id];
-    broadcast(JSON.stringify);
+    delete connectedSocket[socket.id];
+    broadcast(JSON.stringify({type : 'disconnect', id : socket.id}));
   });
 
   function broadcast(msg) {
-    for (var i = 0, count = connectedSocket.length; i < count; i++) {
-      if (connectedSocket[i] && socket.id !== connectedSocket[i].id) {
+    for (var i in connectedSocket) {
+      if (connectedSocket[i] && socket.id !== i) {
         connectedSocket[i].send(msg);
       }
     }
