@@ -1,5 +1,5 @@
 {
-  "name" : "ws-echo",
+  "name" : "ws-cursors",
   "version" : "0.0.1",
   "dependencies" : {
     "express" : "latest",

@@ -18,6 +18,7 @@ wsServer.on('request', function (request) {
   var connection = request.accept('echo-protocol', request.origin);
   console.log((new Date()) + ' Connection accepted.');
   connection.on('message', function (message) {
+    console.log(wsServer.clients);
     console.log(' \033[96mgot:\033[39m ' + message.utf8Data);
     connection.sendUTF('pong');
   });

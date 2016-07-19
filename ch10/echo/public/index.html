@@ -8,30 +8,26 @@
 
     window.onload = function () {
       // create socket
-      var client = new WebSocket('ws://localhost:3000', 'echo-protocol');
+      var ws = new WebSocket('ws://localhost:3000', 'echo-protocol');
 
-      client.onerror = function () {
+      ws.onerror = function () {
         console.log('Connection Error');
       }
 
-      client.onopen = function (evt) {
-        console.log('WebSocket Client Connected');
+      ws.onopen = function () {
         // send first ping
         ping();
       };
 
-      client.onmessage = function (evt) {
-        //alert( "Received Message: " + evt.data);
-
-        console.log(' got: ' + event.data);
+      ws.onmessage = function (evt) {
+        console.log(' got: ' + evt.data);
         // you got echo back, measure latency
-        document.getElementById('latency').innerHTML = new Date() - lastMessage
-           +'ms';
+        document.getElementById('latency').innerHTML = (new Date() - lastMessage) + 'ms';
         // ping again
         //ping();
       }
 
-      client.onclose = function () {
+      ws.onclose = function () {
         console.log("echo-protocol Client Closed");
       }
 
@@ -40,8 +36,8 @@
         lastMessage = new Date();
 
         // send the message
-        if (client.readyState === client.OPEN) {
-          client.send('ping');
+        if (ws.readyState === ws.OPEN) {
+          ws.send('ping');
         }
       }
     };
