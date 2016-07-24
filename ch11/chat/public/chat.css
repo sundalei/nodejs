@@ -1,2 +1,4 @@
-#chat {display: none}
-.confirmed {color: green}
+#chat {display: none;}
+.confirmed {color: green;}
+#results a {display: none;}
+form.isDJ #results a {display: inline;}

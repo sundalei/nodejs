@@ -4,7 +4,8 @@
 
 var express = require('express'),
     sio = require('socket.io'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    request = require('superagent');
 
 /**
  * Create app.
@@ -37,7 +38,7 @@ function elect (socket) {
   });
 }
 
-io.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
   socket.on('join', function (name) {
     socket.nickname = name;
     socket.broadcast.emit('announcement', name + ' joined the chat.');
@@ -55,6 +56,13 @@ io.on('connection', function (socket) {
     // confirm the reception
     fn(Date.now());
   });
-});
 
-// http://music.163.com/api/playlist/detail?id=428448345
+  socket.on('search', function (q, fn) {
+    request.get('http://music.163.com/api/playlist/detail?id=' +
+      encodeURIComponent(q)).end(function (err, res) {
+      if (res.status === 200) {
+        console.log(res.body.result.tracks);
+      }
+    });
+  });
+});

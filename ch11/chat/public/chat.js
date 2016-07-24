@@ -41,5 +41,23 @@ window.onload = function () {
     }
 
     socket.on('text', addMessage);
+
+    // search form
+    var form = document.getElementById('dj');
+    var results = document.getElementById('results');
+    form.style.display = 'block';
+    form.onsubmit = function () {
+      results.innerHTML = '';
+      socket.emit('search', document.getElementById('s').value, function (songs) {
+        return false;
+      });
+
+      // if the web page submit to itself, the connect event invoked again.
+      return false;
+    }
+
+    socket.on('elected', function () {
+      form.className = 'isDJ';
+    });
   });
 }

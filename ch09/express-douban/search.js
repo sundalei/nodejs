@@ -8,7 +8,7 @@ var request = require('superagent');
  */
 module.exports = function search (query, fn) {
   request.get('http://api.douban.com/v2/movie/search')
-         .send({tag : query})
+         .send({tag : encodeURIComponent(query)})
          .end(function (err, res) {
            if (res.body && Array.isArray(res.body.subjects)) {
              return fn (null, res.body.subjects);
