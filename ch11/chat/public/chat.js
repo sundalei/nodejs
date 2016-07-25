@@ -42,6 +42,22 @@ window.onload = function () {
 
     socket.on('text', addMessage);
 
+    var playing = document.getElementById('playing');
+    function play(song) {
+      if(!song) {
+        return;
+      }
+      playing.innerHTML = '<br><b>Now Playing: </b> ' +
+        song.artists[0].name + ' ' + song.name + '<br>';
+
+      var iframe = document.createElement('iframe');
+      iframe.frameborder = 0;
+      iframe.src = song.mp3Url;
+      playing.appendChild(iframe);
+    }
+
+    socket.on('song', play);
+
     // search form
     var form = document.getElementById('dj');
     var results = document.getElementById('results');
@@ -49,7 +65,22 @@ window.onload = function () {
     form.onsubmit = function () {
       results.innerHTML = '';
       socket.emit('search', document.getElementById('s').value, function (songs) {
-        return false;
+        for (var i = 0, l = songs.length; i < l; i++) {
+          (function (song) {
+            var result = document.createElement('li');
+            result.innerHTML = song.artists[0].name + ' - <b>' + song.name + '</b>';
+            var a = document.createElement('a');
+            a.href = '#';
+            a.innerHTML = 'Select';
+            a.onclick = function () {
+              socket.emit('song', song);
+              play(song);
+              return false;
+            }
+            result.appendChild(a);
+            results.appendChild(result);
+          })(songs[i]);
+        }
       });
 
       // if the web page submit to itself, the connect event invoked again.

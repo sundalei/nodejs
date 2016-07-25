@@ -50,6 +50,13 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  socket.on('song', function (song) {
+    if(socket.dj) {
+      currentSong = song;
+      socket.broadcast.emit('song', song);
+    }
+  });
+
   socket.on('text', function (msg, fn) {
     socket.broadcast.emit('text', socket.nickname, msg);
 
@@ -61,7 +68,8 @@ io.sockets.on('connection', function (socket) {
     request.get('http://music.163.com/api/playlist/detail?id=' +
       encodeURIComponent(q)).end(function (err, res) {
       if (res.status === 200) {
-        console.log(res.body.result.tracks);
+        var songs = res.body.result.tracks;
+        fn(songs);
       }
     });
   });
