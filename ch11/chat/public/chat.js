@@ -42,6 +42,7 @@ window.onload = function () {
 
     socket.on('text', addMessage);
 
+    // play songs
     var playing = document.getElementById('playing');
     function play(song) {
       if(!song) {
