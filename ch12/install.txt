@@ -1,0 +1,78 @@
+step1: install mongodb 3.2
+
+Import the public key used by the package management system.
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+
+Create a list file for MongoDB.
+echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+Reload local package database.
+sudo apt update
+
+Install the MongoDB packages.
+sudo apt install -y mongodb-org
+
+step2: check installed status
+$:mongod
+
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] MongoDB starting : pid=8055 port=27017 dbpath=/data/db 64-bit host=xbrl-virtual-machine
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] db version v3.2.8
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] git version: ed70e33130c977bda0024c125b56d159573dbaf0
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2g-fips  1 Mar 2016
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] modules: none
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] build environment:
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten]     distmod: ubuntu1604
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten]     distarch: x86_64
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-07-27T02:54:50.123+0900 I CONTROL  [initandlisten] options: {}
+2016-07-27T02:54:50.150+0900 I STORAGE  [initandlisten] exception in initAndListen: 29 Data directory /data/db not found., terminating
+2016-07-27T02:54:50.150+0900 I CONTROL  [initandlisten] dbexit:  rc: 100
+
+$:sudo mkdir -p /data/db
+$:mongod
+
+2016-07-27T02:55:25.993+0900 I CONTROL  [initandlisten] MongoDB starting : pid=8062 port=27017 dbpath=/data/db 64-bit host=xbrl-virtual-machine
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] db version v3.2.8
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] git version: ed70e33130c977bda0024c125b56d159573dbaf0
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2g-fips  1 Mar 2016
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] modules: none
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] build environment:
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten]     distmod: ubuntu1604
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten]     distarch: x86_64
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-07-27T02:55:25.994+0900 I CONTROL  [initandlisten] options: {}
+2016-07-27T02:55:26.013+0900 I STORAGE  [initandlisten] exception in initAndListen: 98 Unable to create/open lock file: /data/db/mongod.lock errno:13 Permission denied Is a mongod instance already running?, terminating
+2016-07-27T02:55:26.013+0900 I CONTROL  [initandlisten] dbexit:  rc: 100
+
+$:sudo chown -R $USER /data/db
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] MongoDB starting : pid=8102 port=27017 dbpath=/data/db 64-bit host=xbrl-virtual-machine
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] db version v3.2.8
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] git version: ed70e33130c977bda0024c125b56d159573dbaf0
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2g-fips  1 Mar 2016
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] modules: none
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] build environment:
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten]     distmod: ubuntu1604
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten]     distarch: x86_64
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-07-27T03:02:13.515+0900 I CONTROL  [initandlisten] options: {}
+2016-07-27T03:02:13.536+0900 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-07-27T03:02:13.581+0900 I CONTROL  [initandlisten]
+2016-07-27T03:02:13.581+0900 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2016-07-27T03:02:13.581+0900 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-07-27T03:02:13.581+0900 I CONTROL  [initandlisten]
+2016-07-27T03:02:13.582+0900 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-07-27T03:02:13.582+0900 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-07-27T03:02:13.582+0900 I CONTROL  [initandlisten]
+2016-07-27T03:02:13.582+0900 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+2016-07-27T03:02:13.583+0900 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-07-27T03:02:13.598+0900 I NETWORK  [initandlisten] waiting for connections on port 27017
+2016-07-27T03:03:08.406+0900 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36104 #1 (1 connection now open)
+2016-07-27T03:03:08.412+0900 I NETWORK  [conn1] end connection 127.0.0.1:36104 (0 connections now open)
+2016-07-27T03:03:08.657+0900 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36106 #2 (1 connection now open)
+2016-07-27T03:03:08.657+0900 I NETWORK  [conn2] end connection 127.0.0.1:36106 (0 connections now open)
+2016-07-27T03:03:08.658+0900 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36108 #3 (1 connection now open)
+2016-07-27T03:03:08.658+0900 I NETWORK  [conn3] end connection 127.0.0.1:36108 (0 connections now open)
+    
