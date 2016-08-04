@@ -96,6 +96,7 @@ function createData() {
     User.create(users, function(err, docs) {
         Post.create(posts, function(err, docs) {
             Comment.create(comments, function(err, docs) {
+                console.log('create data success');
             });
         });
     });
