@@ -1,0 +1,11 @@
+{
+    "name": "user-auth-example",
+    "version": "0.0.1",
+    "dependencies": {
+        "express": "latest",
+        "mongoose": "latest",
+        "pug": "latest",
+        "body-parser": "latest",
+        "express-session": "latest"
+    }
+}
