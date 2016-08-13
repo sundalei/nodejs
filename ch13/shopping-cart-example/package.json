@@ -1,0 +1,9 @@
+{
+  "name" : "shopping-cart-example",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "express" : "latest",
+    "pug" : "latest",
+    "mysql" : "latest"
+  }
+}
