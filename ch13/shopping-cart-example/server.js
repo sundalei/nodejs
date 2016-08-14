@@ -3,7 +3,8 @@
  */
 
 var express = require('express'),
-    mysql = require('mysql');
+    mysql = require('mysql'),
+    config = require('./config');
 
 /**
  * Create app
@@ -22,17 +23,14 @@ app.set('views', __dirname + '/views');
  * Connect to MySQL
  */
 
-var connection = mysql.createConnection({
-  host : 'localhost',
-  database : 'cart-example'
-});
+var connection = mysql.createConnection(config);
 
 /**
  * Main route
  */
 
 app.get('/', function (req, res, next) {
-  res.render('index');
+  res.render('index', {items: []});
 });
 
 /**

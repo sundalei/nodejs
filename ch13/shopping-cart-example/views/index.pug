@@ -1,8 +1,11 @@
-doctype 5
-html
-  head
-    title MongoDB example
-  body
-    h1 My first MongoDB app
-    hr
-    block body
+extends layout
+block body
+  h2 All items
+  if (items.length)
+    ul
+      each item in items
+        li
+          h3: a(href="/item/#{item.id}")= item.title
+          = item.description
+  else
+    p No items to show
