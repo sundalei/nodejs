@@ -9,3 +9,15 @@ block body
           = item.description
   else
     p No items to show
+
+  h2 Create new item
+
+  form(action="/create", method="POST")
+    p
+      label Title
+      input(type="text", name="title")
+    p
+      label Description
+      textArea(name="description")
+    p
+      button Submit
