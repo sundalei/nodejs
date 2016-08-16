@@ -16,7 +16,7 @@ block body
   else
     p No reviews to show. Write one!
 
-  form(action="/item/#{item.id}/review", method="POST")
+  form(action="/item/" + item.id + "/review", method="POST")
     fieldset
       legend Create review
       p

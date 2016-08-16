@@ -5,7 +5,7 @@ block body
     ul
       each item in items
         li
-          h3: a(href="/item/#{item.id}")= item.title
+          h3: a(href="/item/" + item.id)= item.title
           = item.description
   else
     p No items to show
@@ -18,6 +18,6 @@ block body
       input(type="text", name="title")
     p
       label Description
-      textArea(name="description")
+      textarea(name="description")
     p
       button Submit

@@ -37,7 +37,9 @@ var connection = mysql.createConnection(config);
  */
 
 app.get('/', function (req, res, next) {
-  res.render('index', {items: []});
+  connection.query('SELECT id, title, description FROM item', function (err, results) {
+    res.render('index', {items: results});
+  });
 });
 
 /**
@@ -60,7 +62,34 @@ app.post('/create', function (req, res, next) {
  */
 
 app.get('/item/:id', function (req, res, next) {
-  res.render('item');
+  function getItem(fn) {
+    connection.query('SELECT id, title, description FROM item WHERE id = ? LIMIT 1',
+         [req.params.id], function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      if(!results[0]) {
+        return res.send(404);
+      }
+      fn(results[0]);
+    });
+  }
+
+  function getReviews(item_id, fn) {
+    connection.query('SELECT text, stars FROM review WHERE item_id = ?',
+      [item_id], function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      fn(results);
+    });
+  }
+
+  getItem(function (item) {
+    getReviews(item.id, function (reviews) {
+      res.render('item', {item: item, reviews: reviews});
+    });
+  });
 });
 
 /**
