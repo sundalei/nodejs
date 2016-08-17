@@ -3,5 +3,5 @@
   "database" : "cart-example",
   "user" : "root",
   "password" : "root",
-  "charset" : "utf8mb4"
+  "charset" : "utf8"
 }

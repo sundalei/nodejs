@@ -16,7 +16,7 @@ var connection = mysql.createConnection(config);
  * Create database.
  */
 
-connection.query('CREATE DATABASE IF NOT EXISTS `cart-example`');
+connection.query('CREATE DATABASE IF NOT EXISTS `cart-example` character set utf8 ');
 connection.query('USE `cart-example`');
 
 /**

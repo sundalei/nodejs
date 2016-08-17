@@ -1,0 +1,9 @@
+{
+  "name" : "todo-list-example",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "express" : "latest",
+    "pug" : "latest",
+    "sequelize" : "latest"
+  }
+}
