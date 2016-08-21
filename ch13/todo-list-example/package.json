@@ -4,6 +4,8 @@
   "dependencies" : {
     "express" : "latest",
     "pug" : "latest",
+    "mysql" : "latest",
+    "body-parser" : "latest",
     "sequelize" : "latest"
   }
 }

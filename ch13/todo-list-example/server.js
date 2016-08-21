@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 
-var express = require('express');
+var express = require('express'),
+    Sequelize = require('sequelize'),
+    bodyParser = require('body-parser');
 
 /**
  * Create app.
@@ -16,6 +18,52 @@ var app = express();
 
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
+
+/**
+ * Middleware
+ */
+
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended: false}));
+
+/**
+ * Initialize sequelize
+ */
+
+var sequelize = new Sequelize('todo-example', 'root', 'root');
+
+sequelize.authenticate().then(function (err) {
+  console.log('Connection has been established successfully.');
+}).catch(function (err) {
+  console.log('Unable to connect to the database:', err);
+});
+
+var Project = sequelize.define('Project', {
+  title: Sequelize.STRING,
+  description: Sequelize.TEXT,
+  created: Sequelize.DATE
+});
+
+/**
+ * Define tasks model
+ */
+
+var Task = sequelize.define('Task', {
+  title: Sequelize.STRING
+});
+
+/**
+ * Set up Connection
+ */
+
+Task.belongsTo(Project);
+Project.hasMany(Task);
+
+/**
+ * Sync
+ */
+
+sequelize.sync({force: true});
 
 /**
  * Main route
@@ -38,7 +86,9 @@ app.delete('/project/:id', function (req, res, next) {
  */
 
 app.post('/projects', function (req, res, next) {
-
+  Project.build(req.body).save().then(function (obj) {
+    res.send(obj);
+  }).catch(next);
 });
 
 /**
@@ -46,7 +96,7 @@ app.post('/projects', function (req, res, next) {
  */
 
 app.get('/project/:id/tasks', function (req, res, next) {
-
+  res.render('tasks', {project: {id: 1, title: 'hello'}, tasks: [{id: 1, title: 'title1'}, {id: 2, title: 'title2'}]});
 });
 
 /**
@@ -54,7 +104,10 @@ app.get('/project/:id/tasks', function (req, res, next) {
  */
 
 app.post('/project/:id/tasks', function (req, res, next) {
-
+  req.body.ProjectId = req.params.id;
+  Task.build(req.body).save().then(function (obj) {
+    res.send(obj);
+  }).catch(next);
 });
 
 /**
